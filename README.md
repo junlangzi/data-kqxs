@@ -1,8 +1,5 @@
 # Vietnam Lottery (XSMB) Analysis
 
-Using GitHub Action to automatically fetch and analyze results of the Vietnam lottery daily.
-
-This project is created by [Khiem Doan](https://github.com/khiemdoan). I create this project for education purpose only. You can use any resource in this repository for free without any permission.
 
 Sử dụng GitHub Action để tự động hoá thu thập và phân tích kết quả xổ số hàng ngày của Việt Nam.
 

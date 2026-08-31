@@ -1,42 +1,43 @@
 name: Update data
+
 on:
   schedule:
-    - cron: '35 11 * * *' # 6:35 PM Vietnam
+    - cron: '35 11 * * *'   # 18:35 giờ Việt Nam
   workflow_dispatch:
 
 jobs:
   update-data:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
-      contents: write   # Cần quyền ghi để push
+      contents: write
+
     steps:
-      - name: checkout repo content
+      - name: Checkout repository
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0          # Lấy full history để tránh diverge
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
           cache: pip
           cache-dependency-path: requirements.txt
 
-      - name: install python packages
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: update data
+      - name: Update data
         run: python main.py
 
-      - name: get current date
+      - name: Get current date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      - name: Commit and push changes
+      - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Updated ${{ env.date }}"
           commit_user_name: GitHub Action
           commit_user_email: action@github.com
-          # Chỉ commit các file data (tùy chỉnh nếu cần)
-          # file_pattern: 'data/*'
+          file_pattern: data/*

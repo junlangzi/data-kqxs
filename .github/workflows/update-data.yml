@@ -1,18 +1,17 @@
 name: Update data
-
 on:
   schedule:
-    - cron: 35 11 * * * # 6:35 PM in Vietnam
-
+    - cron: '35 11 * * *' # 6:35 PM in Vietnam
+  workflow_dispatch: # Thêm dòng này nếu muốn chạy thủ công
 jobs:
   update-data:
     runs-on: ubuntu-22.04
     steps:
       - name: checkout repo content
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5          # ← đổi từ @v4 → @v5
 
       - name: setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6      # ← đổi từ @v5 → @v6
         with:
           python-version: '3.11'
           cache: pip
@@ -29,7 +28,7 @@ jobs:
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: push changes
-        uses: actions-x/commit@v6
+        uses: actions-x/commit@v6          # Giữ nguyên (action này dùng shell, không dùng Node)
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           message: Updated ${{ env.date }}
